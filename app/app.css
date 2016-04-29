@@ -1,0 +1,122 @@
+/* app css stylesheet */
+@font-face {
+  font-family: myFirstFont;
+  src: url(resources/fonts/cac_champagne-webfont.woff);
+
+}
+
+html{
+  margin: 0;
+  width: 100%;
+}
+
+body{
+  background-image: url(resources/img/background-img.jpg);
+  background-size:cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  filter: alpha(opacity=70);
+  margin-top : -3em;
+  height: 100%;
+  width: 100%;
+}
+
+.header{
+  padding-top: 1em;
+  text-align: center;
+  font-size-adjust: 1;
+  font-weight: 300;
+  font-family: myFirstFont;
+  height: 10em;
+  text-align: center;
+  width: 100%;
+  background: whitesmoke fixed;
+  position: fixed;
+  z-index: 10;
+}
+
+.corps{
+  margin-left: 8em;
+  margin-right: 8em;
+  padding-left: 5em;
+  padding-right: 5em;
+  padding-top: 10em;
+  margin-top: 3em;
+  margin-bottom: 3em;
+  height: 100%;
+}
+
+.addMyMenu{
+  background-color: whitesmoke;
+  position: fixed;
+  margin-right: 12em;
+  margin-top: 2em;
+    margin-bottom: 15em;
+width: 30em;
+    height: 70%;
+    overflow-y: scroll;
+
+    overflow-x: hidden;
+
+    font-family: myFirstFont;
+padding: 2em;
+border-radius: 25px;
+}
+
+.list-group-item{
+  background-color: whitesmoke;
+  margin : 2em;
+    border-radius: 25px;
+}
+
+#viewNvote{
+  margin-top: 2em;
+}
+
+p{
+  color: black;
+
+}
+
+h1{
+    text-align: center;
+}
+
+.menu_def{
+  font-family: myFirstFont;
+  display:inline-block;
+  width:120px;
+}
+
+.menu_item{
+  font-family: myFirstFont;
+  display:inline-block;
+  width:200px;
+}
+
+.menu_new_item{
+    font-family: myFirstFont;
+    display:inline-block;
+    float: right;
+    width:200px;
+}
+
+.btn.btn-secondary{
+    font-size: 1.5em;
+    background-color: #463F32;
+    color: whitesmoke;
+}
+
+.btn.btn-secondary:hover {
+    background-color: #1b1613;
+}
+
+.btn.btn-primary{
+    background-color: whitesmoke ;
+    border: none;
+    color: #463F32;
+}
+
+.btn.btn-primary:hover {
+    background-color: lightgrey;
+}
