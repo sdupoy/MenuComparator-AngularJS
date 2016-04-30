@@ -2,12 +2,13 @@
 @font-face {
   font-family: myFirstFont;
   src: url(resources/fonts/cac_champagne-webfont.woff);
-
+    font-weight: 800;
 }
 
 html{
   margin: 0;
   width: 100%;
+    min-width: 990px;
 }
 
 body{
@@ -22,9 +23,7 @@ body{
 }
 
 .header{
-  padding-top: 1em;
   text-align: center;
-  font-size-adjust: 1;
   font-weight: 300;
   font-family: myFirstFont;
   height: 10em;
@@ -59,14 +58,17 @@ width: 30em;
     overflow-x: hidden;
 
     font-family: myFirstFont;
-padding: 2em;
+    padding-top: 0;
+padding-right: 2em;
+    padding-left: 2em;
+    padding-bottom: 2em;
 border-radius: 25px;
 }
 
 .list-group-item{
   background-color: whitesmoke;
   margin : 2em;
-    border-radius: 25px;
+    border-radius: 10px;
 }
 
 #viewNvote{
@@ -80,18 +82,35 @@ p{
 
 h1{
     text-align: center;
+    font-size: 7em;
+}
+h2{
+    text-align: center;
+    font-size: 4em;
+}
+h4{
+    font-size: 1.5em;
 }
 
 .menu_def{
   font-family: myFirstFont;
   display:inline-block;
   width:120px;
+    font-size: 1.2em;
+}
+.menu_def_author{
+    font-family: myFirstFont;
+    text-indent: 4em;
+    display:inline-block;
+    width:120px;
+    font-size: 1.2em;
 }
 
 .menu_item{
   font-family: myFirstFont;
   display:inline-block;
   width:200px;
+    font-size: 1.2em;
 }
 
 .menu_new_item{
@@ -119,4 +138,9 @@ h1{
 
 .btn.btn-primary:hover {
     background-color: lightgrey;
+}
+
+.right{
+    text-align: right;
+    font-style: oblique;
 }
