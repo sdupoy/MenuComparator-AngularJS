@@ -59,9 +59,9 @@
               <span class="menu_def">Dessert</span>
               <span class="menu_item">{{menu.dessert}}</span>
           </h3>
-          <h4>{{menu.upvotes}} <i class="glyphicon glyphicon-thumbs-up" ng-show="menu.upvotes"></i>
-              {{menu.downvotes}} <i class="glyphicon glyphicon-thumbs-down" ng-show="menu.downvotes"></i>
-              <h4 class="right">by {{menu.author}}</h4>
+          <span class="menu_item right">by {{menu.author}}</span>
+          <h4>{{menu.upvotes}} <i class="glyphicon glyphicon-thumbs-up" ng-show="menu.upvotes" ng-click="MenusCtrl.upvote(menu)"></i>
+              {{menu.downvotes}} <i class="glyphicon glyphicon-thumbs-down" ng-show="menu.downvotes" ng-click="MenusCtrl.downvote(menu)"></i>
           </h4>
       </div>
     </div>
@@ -100,7 +100,7 @@
             <h3>
                 <span class="menu_def">Dessert</span>
                 <span class="menu_new_item">
-                    <input type="text" ng-model="MenusCtrl.menu.dessert"/>
+                    <input type="text" ng-model="MenusCtrl.menu.dessert" required/>
                 </span>
             </h3>
           <h3>
