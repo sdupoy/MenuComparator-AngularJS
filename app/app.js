@@ -107,9 +107,7 @@
             objectStore.openCursor().onsuccess = function(event) {
                 var cursor = event.target.result;
                 if(cursor) {
-                    console.log(cursor);
                     if(cursor.value.menu.id === menu.id) {
-                        console.log(cursor.value.menu);
                         // Get the old value that we want to update
                         var menuToUpdate = cursor.value;
 
@@ -137,7 +135,73 @@
                     }
                 }
 
-            }
+            };
+            return deferred.promise;
+        };
+
+        var upvote = function(menu){
+            var deferred = $q.defer();
+            var transaction = db.transaction(['menus'], 'readwrite');
+            var objectStore = transaction.objectStore('menus');
+
+            objectStore.openCursor().onsuccess = function(event) {
+                var cursor = event.target.result;
+                if(cursor) {
+                    if(cursor.value.menu.id === menu.id) {
+                        // Get the old value that we want to update
+                        var menuToUpdate = cursor.value;
+
+                        // update the value(s) in the object that we want to change
+                        menuToUpdate.menu.upvotes++;
+                        var request = cursor.update(menuToUpdate);
+                        request.onerror = function(e) {
+                            console.log(e.value);
+                            deferred.reject("Menu couldn't be upvoted!");
+                        };
+                        request.onsuccess = function(e) {
+                            // Success - the data is updated!
+                            deferred.resolve();
+                            console.log("Upvote successful");
+                        };
+                    } else {
+                        cursor.continue();
+                    }
+                }
+
+            };
+            return deferred.promise;
+        };
+
+        var downvote = function(menu){
+            var deferred = $q.defer();
+            var transaction = db.transaction(['menus'], 'readwrite');
+            var objectStore = transaction.objectStore('menus');
+
+            objectStore.openCursor().onsuccess = function(event) {
+                var cursor = event.target.result;
+                if(cursor) {
+                    if(cursor.value.menu.id === menu.id) {
+                        // Get the old value that we want to update
+                        var menuToUpdate = cursor.value;
+
+                        // update the value(s) in the object that we want to change
+                        menuToUpdate.menu.downvotes++;
+                        var request = cursor.update(menuToUpdate);
+                        request.onerror = function(e) {
+                            console.log(e.value);
+                            deferred.reject("Menu couldn't be downvoted!");
+                        };
+                        request.onsuccess = function(e) {
+                            // Success - the data is updated!
+                            deferred.resolve();
+                            console.log("Downvote successful");
+                        };
+                    } else {
+                        cursor.continue();
+                    }
+                }
+
+            };
             return deferred.promise;
         };
 
@@ -170,6 +234,8 @@
             getMenus: getMenus,
             addMenu: addMenu,
             editMenu: editMenu,
+            upvote: upvote,
+            downvote: downvote,
             deleteMenu: deleteMenu
         };
     });
@@ -201,6 +267,7 @@
           }
 
       };
+
       that.deleteMenu = function(id){
           console.log(id);
           indexedDBDataSvc.deleteMenu(id).then(function(){
@@ -209,6 +276,7 @@
               $window.alert(err);
           });
           that.menu = {};
+          that.edition = false; 
       };
 
 /* FOR LOCAL AND TEMPORARY USE ONLY
@@ -245,7 +313,7 @@
 
       that.editMenuView = function(menu){
           that.menu = menu;
-          this.edition = true;
+          that.edition = true;
           console.log(that.menu);
       };
 
@@ -256,8 +324,23 @@
               $window.alert(err);
           });
           that.menu = {};
+          that.edition = false;
+      };
 
-          this.edition = false;
+      that.upvote = function(menu){
+          indexedDBDataSvc.upvote(menu).then(function(){
+              that.refreshList();
+          }, function(err){
+              $window.alert(err);
+          });
+      };
+
+      that.downvote = function(menu){
+          indexedDBDataSvc.downvote(menu).then(function(){
+              that.refreshList();
+          }, function(err){
+              $window.alert(err);
+          });
       };
 
       function init(){
@@ -265,7 +348,7 @@
               for(var i = 0; i<3; i++){
                   that.menu = someMenus[i];
                   that.addMenu();
-              };
+              }
               that.refreshList();
           });
 
@@ -274,21 +357,6 @@
       init();
 
       });
-
-    var menuInit = {
-        id: '',
-        appetizer:'',
-        isDrinks: false,
-        drinks:'',
-        entree:'',
-        isWine: false,
-        wine:'',
-        dessert:'',
-        rating:0,
-        author: '',
-        upvotes: 0,
-        downvotes: 0
-    };
 
   var someMenus = [
     {
