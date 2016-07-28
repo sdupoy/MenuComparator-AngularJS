@@ -143,4 +143,13 @@ h4{
 .right{
     text-align: right;
     font-style: oblique;
+    font-size: 1.4em;
+}
+
+.glyphicon .glyphicon-thumbs-up{
+    cursor: pointer;
+}
+
+.glyphicon .glyphicon-thumbs-down{
+    cursor: pointer;
 }
