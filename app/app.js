@@ -8,7 +8,7 @@
         console.log('factory loaded....');
         var indexedDB = $window.indexedDB;
         var db=null;
-        var lastIndex=0;
+        //var lastIndex=0;
 
         var open = function(){
             var deferred = $q.defer();
@@ -18,7 +18,7 @@
                 db = e.target.result;
                 e.target.transaction.onerror = indexedDB.onerror;
                 if(!db.objectStoreNames.contains("menus")) {
-                    db.createObjectStore("menus", { autoIncrement: true });
+                    db.createObjectStore("menus", { keyPath: "id", autoIncrement:true });
                 }
             };
             request.onsuccess = function(e) {
@@ -48,11 +48,8 @@
                     var result = e.target.result;
                     if(result)
                     {
-                        tempMenus.push(result.value.menu);
-                        console.log(result.value.menu);
-                        if(result.value.id > lastIndex){
-                            lastIndex=result.value.id;
-                        }
+                        tempMenus.push(result.value);
+                        console.log(result.value);
                         result.continue();
                     }
                     else{
@@ -79,16 +76,13 @@
             else{
                 var trans = db.transaction(["menus"], "readwrite");
                 var store = trans.objectStore("menus");
-                lastIndex++;
-                menu.id = lastIndex;
-                var request = store.put({
-                    "id": lastIndex,
-                    "menu": menu
-                });
+
+                var request = store.add(menu);
 
                 request.onsuccess = function(e) {
                     deferred.resolve();
-                    console.log("Menu item has been added!");
+                    console.log("Menu item has been added:");
+                    console.log(menu);
                 };
 
                 request.onerror = function(e) {
@@ -107,7 +101,9 @@
             objectStore.openCursor().onsuccess = function(event) {
                 var cursor = event.target.result;
                 if(cursor) {
-                    if(cursor.value.menu.id === menu.id) {
+                    console.log(cursor);
+                    if(cursor.value.menu === menu) {
+                        console.log(cursor.value.menu);
                         // Get the old value that we want to update
                         var menuToUpdate = cursor.value;
 
@@ -135,7 +131,7 @@
                     }
                 }
 
-            };
+            }
             return deferred.promise;
         };
 
@@ -147,7 +143,7 @@
             objectStore.openCursor().onsuccess = function(event) {
                 var cursor = event.target.result;
                 if(cursor) {
-                    if(cursor.value.menu.id === menu.id) {
+                    if(cursor.value.menu === menu) {
                         // Get the old value that we want to update
                         var menuToUpdate = cursor.value;
 
@@ -180,7 +176,7 @@
             objectStore.openCursor().onsuccess = function(event) {
                 var cursor = event.target.result;
                 if(cursor) {
-                    if(cursor.value.menu.id === menu.id) {
+                    if(cursor.value.menu === menu) {
                         // Get the old value that we want to update
                         var menuToUpdate = cursor.value;
 
@@ -205,7 +201,7 @@
             return deferred.promise;
         };
 
-        var deleteMenu = function(key){
+        var deleteMenu = function(menu){
             var deferred = $q.defer();
 
             if(db === null){
@@ -215,7 +211,7 @@
                 var trans = db.transaction(["menus"], "readwrite");
                 var store = trans.objectStore("menus");
 
-                var request = store.delete(key);
+                var request = store.delete(menu);
                 request.onsuccess = function(e) {
                     deferred.resolve();
                 };
@@ -234,9 +230,10 @@
             getMenus: getMenus,
             addMenu: addMenu,
             editMenu: editMenu,
+            deleteMenu: deleteMenu,
             upvote: upvote,
-            downvote: downvote,
-            deleteMenu: deleteMenu
+            downvote: downvote
+
         };
     });
 
@@ -245,7 +242,8 @@
       this.edition = false;
       var that = this;
       that.menus = [];
-        that.menu = {};
+      that.menu = {};
+
       that.refreshList = function(){
           indexedDBDataSvc.getMenus().then(function(data){
               that.menus=data;
@@ -268,15 +266,14 @@
 
       };
 
-      that.deleteMenu = function(id){
-          console.log(id);
-          indexedDBDataSvc.deleteMenu(id).then(function(){
+      that.deleteMenu = function(menu){
+          console.log(menu);
+          indexedDBDataSvc.deleteMenu(menu).then(function(){
               that.refreshList();
           }, function(err){
               $window.alert(err);
           });
           that.menu = {};
-          that.edition = false; 
       };
 
 /* FOR LOCAL AND TEMPORARY USE ONLY
@@ -313,7 +310,7 @@
 
       that.editMenuView = function(menu){
           that.menu = menu;
-          that.edition = true;
+          this.edition = true;
           console.log(that.menu);
       };
 
@@ -324,7 +321,8 @@
               $window.alert(err);
           });
           that.menu = {};
-          that.edition = false;
+
+          this.edition = false;
       };
 
       that.upvote = function(menu){
@@ -360,7 +358,6 @@
 
   var someMenus = [
     {
-        id: 1,
       appetizer:'Fries',
       isDrinks: true,
       drinks:'Budweiser',
@@ -369,11 +366,8 @@
       wine:'',
       dessert:'Ice cream',
       author: 'John Doe',
-        upvotes: 81,
-        downvotes: 9
     },
     {
-        id: 2,
       appetizer:'',
       isDrinks: false,
       drinks:'',
@@ -382,11 +376,8 @@
       wine:'Chianti',
       dessert:'Cheesecake',
       author: 'Karl Xarm',
-        upvotes: 105,
-        downvotes: 36
     },
   {
-      id: 3,
       appetizer: 'Onion rings',
       isDrinks: true,
       drinks:'Miller lite',
@@ -395,8 +386,6 @@
       wine:'',
       dessert:'Cookies',
       author: 'Ben Hur',
-      upvotes: 52,
-      downvotes: 48
   }
   ];
 })();

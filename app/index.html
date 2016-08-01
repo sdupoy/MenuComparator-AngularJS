@@ -27,14 +27,14 @@
 <div class="corps" ng-controller="menuController as MenusCtrl">
   <div class="col-md-6">
     <div class="list-group" id="viewNvote" >
-      <div class="list-group-item" ng-repeat="menu in MenusCtrl.menus">
+      <div class="list-group-item" ng-repeat="(key,menu) in MenusCtrl.menus track by $index">
           <em class="pull-right">
               <button class="btn btn-primary" ng-click="MenusCtrl.editMenuView(menu)">
                   <i class="glyphicon glyphicon-pencil"></i>
               </button>
           </em>
           <em class="pull-right">
-              <button class="btn btn-primary" ng-click="MenusCtrl.deleteMenu(menu.id)">
+              <button class="btn btn-primary" ng-click="MenusCtrl.deleteMenu(key)">
                   <i class="glyphicon glyphicon-remove"></i>
               </button>
           </em>
