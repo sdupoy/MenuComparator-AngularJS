@@ -1,57 +1,57 @@
 /* app css stylesheet */
 @font-face {
-  font-family: myFirstFont;
-  src: url(resources/fonts/cac_champagne-webfont.woff);
+    font-family: myFirstFont;
+    src: url(resources/fonts/cac_champagne-webfont.woff);
     font-weight: 800;
 }
 
 html{
-  margin: 0;
-  width: 100%;
+    margin: 0;
+    width: 100%;
     min-width: 990px;
 }
 
 body{
-  background-image: url(resources/img/background-img.jpg);
-  background-size:cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  filter: alpha(opacity=70);
-  margin-top : -3em;
-  height: 100%;
-  width: 100%;
+    background-image: url(resources/img/background-img.jpg);
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: alpha(opacity=70);
+    margin-top : -3em;
+    height: 100%;
+    width: 100%;
 }
 
 .header{
-  text-align: center;
-  font-weight: 300;
-  font-family: myFirstFont;
-  height: 10em;
-  text-align: center;
-  width: 100%;
-  background: whitesmoke fixed;
-  position: fixed;
-  z-index: 10;
+    text-align: center;
+    font-weight: 300;
+    font-family: myFirstFont;
+    height: 10em;
+    text-align: center;
+    width: 100%;
+    background: whitesmoke fixed;
+    position: fixed;
+    z-index: 10;
 }
 
 .corps{
-  margin-left: 8em;
-  margin-right: 8em;
-  padding-left: 5em;
-  padding-right: 5em;
-  padding-top: 10em;
-  margin-top: 3em;
-  margin-bottom: 3em;
-  height: 100%;
+    margin-left: 8em;
+    margin-right: 8em;
+    padding-left: 5em;
+    padding-right: 5em;
+    padding-top: 10em;
+    margin-top: 3em;
+    margin-bottom: 3em;
+    height: 100%;
 }
 
 .addMyMenu{
-  background-color: whitesmoke;
-  position: fixed;
-  margin-right: 12em;
-  margin-top: 2em;
+    background-color: whitesmoke;
+    position: fixed;
+    margin-right: 12em;
+    margin-top: 2em;
     margin-bottom: 15em;
-width: 30em;
+    width: 30em;
     height: 70%;
     overflow-y: scroll;
 
@@ -59,24 +59,24 @@ width: 30em;
 
     font-family: myFirstFont;
     padding-top: 0;
-padding-right: 2em;
+    padding-right: 2em;
     padding-left: 2em;
     padding-bottom: 2em;
-border-radius: 25px;
+    border-radius: 25px;
 }
 
 .list-group-item{
-  background-color: whitesmoke;
-  margin : 2em;
+    background-color: whitesmoke;
+    margin : 2em;
     border-radius: 10px;
 }
 
 #viewNvote{
-  margin-top: 2em;
+    margin-top: 2em;
 }
 
 p{
-  color: black;
+    color: black;
 
 }
 
@@ -93,9 +93,9 @@ h4{
 }
 
 .menu_def{
-  font-family: myFirstFont;
-  display:inline-block;
-  width:120px;
+    font-family: myFirstFont;
+    display:inline-block;
+    width:120px;
     font-size: 1.2em;
 }
 .menu_def_author{
@@ -107,9 +107,9 @@ h4{
 }
 
 .menu_item{
-  font-family: myFirstFont;
-  display:inline-block;
-  width:200px;
+    font-family: myFirstFont;
+    display:inline-block;
+    width:200px;
     font-size: 1.2em;
 }
 

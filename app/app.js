@@ -2,7 +2,7 @@
  * Created by Simon on 4/28/2016.
  */
 (function(){
-  var app = angular.module('bestMenuApp', []);
+    var app = angular.module('bestMenuApp', []);
 
     app.factory('indexedDBDataSvc', function($window, $q){
         console.log('factory loaded....');
@@ -115,10 +115,10 @@
 
         var editMenu = function(menu){
             var deferred = $q.defer();
-            var transaction = db.transaction(['menus'], 'readwrite');
-            var objectStore = transaction.objectStore('menus');
+            var trans = db.transaction(['menus'], 'readwrite');
+            var store = trans.objectStore('menus');
 
-            objectStore.openCursor().onsuccess = function(event) {
+            store.openCursor().onsuccess = function(event) {
                 var cursor = event.target.result;
                 if(cursor) {
                     if(cursor.value.id === menu.id) {
@@ -136,46 +136,46 @@
                         menuToUpdate.wine = menu.wine;
                         menuToUpdate.dessert = menu.dessert;
                         menuToUpdate.author = menu.author;
-                        var request = cursor.update(menuToUpdate);
-                        request.onerror = function(e) {
-                            console.log(e.value);
-                            deferred.reject("Menu item couldn't be updated!");
+
+                        var requestUpdate = store.put(menuToUpdate, menu.id);
+                        requestUpdate.onerror = function(event) {
+                            // Do something with the error
+                            console.log("Menu not updated !");
                         };
-                        request.onsuccess = function(e) {
+                        requestUpdate.onsuccess = function(event) {
                             // Success - the data is updated!
-                            deferred.resolve();
-                            console.log("Update successful: ");
-                            console.log(menuToUpdate);
+                            console.log("Menu updated !");
                         };
                     } else {
                         cursor.continue();
                     }
                 }
 
-            }
+            };
             return deferred.promise;
         };
 
         var upvote = function(menu){
             var deferred = $q.defer();
-            var transaction = db.transaction(['menus'], 'readwrite');
-            var objectStore = transaction.objectStore('menus');
+            var trans = db.transaction(['menus'], 'readwrite');
+            var store = trans.objectStore('menus');
 
-            objectStore.openCursor().onsuccess = function(event) {
+            store.openCursor().onsuccess = function(event) {
                 var cursor = event.target.result;
                 if(cursor) {
-                    if(cursor.value === menu) {
+                    if(cursor.value.id === menu.id) {
                         // Get the old value that we want to update
                         var menuToUpdate = cursor.value;
 
                         // update the value(s) in the object that we want to change
-                        menuToUpdate.menu.upvotes++;
-                        var request = cursor.update(menuToUpdate);
-                        request.onerror = function(e) {
+                        menuToUpdate.upvotes++;
+
+                        var requestUpdate = store.put(menuToUpdate, menu.id);
+                        requestUpdate.onerror = function(e) {
                             console.log(e.value);
                             deferred.reject("Menu couldn't be upvoted!");
                         };
-                        request.onsuccess = function(e) {
+                        requestUpdate.onsuccess = function(e) {
                             // Success - the data is updated!
                             deferred.resolve();
                             console.log("Upvote successful:");
@@ -192,24 +192,25 @@
 
         var downvote = function(menu){
             var deferred = $q.defer();
-            var transaction = db.transaction(['menus'], 'readwrite');
-            var objectStore = transaction.objectStore('menus');
+            var trans = db.transaction(['menus'], 'readwrite');
+            var store = trans.objectStore('menus');
 
-            objectStore.openCursor().onsuccess = function(event) {
+            store.openCursor().onsuccess = function(event) {
                 var cursor = event.target.result;
                 if(cursor) {
-                    if(cursor.value === menu) {
+                    if(cursor.value.id === menu.id) {
                         // Get the old value that we want to update
                         var menuToUpdate = cursor.value;
 
                         // update the value(s) in the object that we want to change
-                        menuToUpdate.menu.downvotes++;
-                        var request = cursor.update(menuToUpdate);
-                        request.onerror = function(e) {
+                        menuToUpdate.downvotes++;
+
+                        var requestUpdate = store.put(menuToUpdate, menu.id);
+                        requestUpdate.onerror = function(e) {
                             console.log(e.value);
                             deferred.reject("Menu couldn't be downvoted!");
                         };
-                        request.onsuccess = function(e) {
+                        requestUpdate.onsuccess = function(e) {
                             // Success - the data is updated!
                             deferred.resolve();
                             console.log("Downvote successful:");
@@ -260,155 +261,155 @@
         };
     });
 
-  app.controller('menuController', function($window, indexedDBDataSvc){
+    app.controller('menuController', function($window, indexedDBDataSvc){
 
-      this.edition = false;
-      var that = this;
-      that.menus = [];
-      that.menu = {};
+        this.edition = false;
+        var that = this;
+        that.menus = [];
+        that.menu = {};
 
-      that.refreshList = function(){
-          indexedDBDataSvc.getMenus().then(function(data){
-              that.menus=data;
-          }, function(err){
-              $window.alert(err);
-          });
-      };
+        that.refreshList = function(){
+            indexedDBDataSvc.getMenus().then(function(data){
+                that.menus=data;
+            }, function(err){
+                $window.alert(err);
+            });
+        };
 
-      that.addMenu = function(){
-          if(that.menu.entree != null || that.menu.author != null){
-              that.menu.upvotes = 0;
-              that.menu.downvotes = 0; //Math.floor((Math.random() * 100) + 1);
-              indexedDBDataSvc.addMenu(that.menu).then(function(){
-                  that.refreshList();
-              }, function(err){
-                  $window.alert(err);
-              });
-              that.menu = {};
-          }
+        that.addMenu = function(){
+            if(that.menu.entree != null || that.menu.author != null){
+                that.menu.upvotes = 0;
+                that.menu.downvotes = 0; //Math.floor((Math.random() * 100) + 1);
+                indexedDBDataSvc.addMenu(that.menu).then(function(){
+                    that.refreshList();
+                }, function(err){
+                    $window.alert(err);
+                });
+                that.menu = {};
+            }
 
-      };
+        };
 
-      that.deleteMenu = function(menu){
-          console.log(menu);
-          indexedDBDataSvc.deleteMenu(menu).then(function(){
-              that.refreshList();
-          }, function(err){
-              $window.alert(err);
-          });
-          that.menu = {};
-      };
+        that.deleteMenu = function(menu){
+            console.log(menu);
+            indexedDBDataSvc.deleteMenu(menu).then(function(){
+                that.refreshList();
+            }, function(err){
+                $window.alert(err);
+            });
+            that.menu = {};
+        };
 
-/* FOR LOCAL AND TEMPORARY USE ONLY
-      this.addMenu = function() {
-          console.log(this.menu);
-          indexedDBDataSvc.addMenu(this.menu);
-          this.menus.push(this.menu);
-          console.log(this.menus);
-          this.menu = {};
-      };
+        /* FOR LOCAL AND TEMPORARY USE ONLY
+         this.addMenu = function() {
+         console.log(this.menu);
+         indexedDBDataSvc.addMenu(this.menu);
+         this.menus.push(this.menu);
+         console.log(this.menus);
+         this.menu = {};
+         };
 
-      this.deleteMenu = function(menu){
-          var index = this.menus.indexOf(menu);
-          if (index > -1) {
-              this.menus.splice(index, 1);
-          }
-      };
-     this.editMenuView = function(menu){
+         this.deleteMenu = function(menu){
+         var index = this.menus.indexOf(menu);
+         if (index > -1) {
+         this.menus.splice(index, 1);
+         }
+         };
+         this.editMenuView = function(menu){
          this.menu = menu;
          this.edition = true;
          this.currentIndex = this.menus.indexOf(menu);
-     };
+         };
 
-     this.editMenuSubmit = function(){
+         this.editMenuSubmit = function(){
          if (this.currentIndex > -1) {
-             console.log(this.menu);
-             this.menus[this.currentIndex] = this.menu;
-             console.log(this.menus);
+         console.log(this.menu);
+         this.menus[this.currentIndex] = this.menu;
+         console.log(this.menus);
          }
          this.currentIndex = -1;
          this.menu = {};
-     };
- */
+         };
+         */
 
-      that.editMenuView = function(menu){
-          that.menu = menu;
-          this.edition = true;
-          console.log(that.menu);
-      };
+        that.editMenuView = function(menu){
+            that.menu = menu;
+            this.edition = true;
+            console.log(that.menu);
+        };
 
-      that.editMenu = function(){
-          indexedDBDataSvc.editMenu(that.menu).then(function(){
-              that.refreshList();
-          }, function(err){
-              $window.alert(err);
-          });
-          that.menu = {};
+        that.editMenu = function(){
+            indexedDBDataSvc.editMenu(that.menu).then(function(){
+                that.refreshList();
+            }, function(err){
+                $window.alert(err);
+            });
+            that.menu = {};
 
-          this.edition = false;
-      };
+            this.edition = false;
+        };
 
-      that.upvote = function(menu){
-          indexedDBDataSvc.upvote(menu).then(function(){
-              that.refreshList();
-          }, function(err){
-              $window.alert(err);
-          });
-      };
+        that.upvote = function(menu){
+            indexedDBDataSvc.upvote(menu).then(function(){
+                that.refreshList();
+            }, function(err){
+                $window.alert(err);
+            });
+        };
 
-      that.downvote = function(menu){
-          indexedDBDataSvc.downvote(menu).then(function(){
-              that.refreshList();
-          }, function(err){
-              $window.alert(err);
-          });
-      };
+        that.downvote = function(menu){
+            indexedDBDataSvc.downvote(menu).then(function(){
+                that.refreshList();
+            }, function(err){
+                $window.alert(err);
+            });
+        };
 
-      function init(){
-          indexedDBDataSvc.open().then(function(){
-              for(var i = 0; i<3; i++){
-                  that.menu = someMenus[i];
-                  that.addMenu();
-              }
-              that.refreshList();
-          });
+        function init(){
+            indexedDBDataSvc.open().then(function(){
+                for(var i = 0; i<3; i++){
+                    that.menu = someMenus[i];
+                    that.addMenu();
+                }
+                that.refreshList();
+            });
 
-      }
+        }
 
-      init();
+        init();
 
-      });
+    });
 
-  var someMenus = [
-    {
-      appetizer:'Fries',
-      isDrinks: true,
-      drinks:'Budweiser',
-      entree:'Burger',
-      isWine: false,
-      wine:'',
-      dessert:'Ice cream',
-      author: 'John Doe',
-    },
-    {
-      appetizer:'',
-      isDrinks: false,
-      drinks:'',
-      entree:'Deep dish pizza',
-      isWine: true,
-      wine:'Chianti',
-      dessert:'Cheesecake',
-      author: 'Karl Xarm',
-    },
-  {
-      appetizer: 'Onion rings',
-      isDrinks: true,
-      drinks:'Miller lite',
-      entree:'Pizza',
-      isWine: false,
-      wine:'',
-      dessert:'Cookies',
-      author: 'Ben Hur',
-  }
-  ];
+    var someMenus = [
+        {
+            appetizer:'Fries',
+            isDrinks: true,
+            drinks:'Budweiser',
+            entree:'Burger',
+            isWine: false,
+            wine:'',
+            dessert:'Ice cream',
+            author: 'John Doe'
+        },
+        {
+            appetizer:'',
+            isDrinks: false,
+            drinks:'',
+            entree:'Deep dish pizza',
+            isWine: true,
+            wine:'Chianti',
+            dessert:'Cheesecake',
+            author: 'Karl Xarm'
+        },
+        {
+            appetizer: 'Onion rings',
+            isDrinks: true,
+            drinks:'Miller lite',
+            entree:'Pizza',
+            isWine: false,
+            wine:'',
+            dessert:'Cookies',
+            author: 'Ben Hur'
+        }
+    ];
 })();
