@@ -18,7 +18,7 @@
                 db = e.target.result;
                 e.target.transaction.onerror = indexedDB.onerror;
                 if(!db.objectStoreNames.contains("menus")) {
-                    db.createObjectStore("menus", { keyPath: "id", autoIncrement:true });
+                    db.createObjectStore("menus", { autoIncrement:true });
                 }
             };
             request.onsuccess = function(e) {
@@ -69,22 +69,42 @@
 
         var addMenu = function(menu){
             var deferred = $q.defer();
-
             if(db === null){
                 deferred.reject("IndexDB is not opened yet!");
             }
             else{
                 var trans = db.transaction(["menus"], "readwrite");
                 var store = trans.objectStore("menus");
-
-                var request = store.add(menu);
-
+                // Adding the menu
+                var request = store.put(menu);
+                // Add is successful
                 request.onsuccess = function(e) {
+                    // Setting the id of menu as it is in DB
+                    var idToSet = e.target.result;
+                    // Getting the object we just added to set the id
+                    var request2 = store.get(idToSet);
+                    request2.onsuccess = function(e) {
+                        var menuWithId = e.target.result;
+                        menuWithId.id = idToSet;
+                        console.log("Setting id...");
+                        console.log(idToSet);
+                        // Put this updated object back into the database.
+                        var requestUpdate = store.put(menuWithId, idToSet);
+                        requestUpdate.onerror = function(event) {
+                            // Do something with the error
+                            console.log("id not set");
+                        };
+                        requestUpdate.onsuccess = function(event) {
+                            // Success - the data is updated!
+                            console.log("id set");
+                        };
+                    };
+
                     deferred.resolve();
                     console.log("Menu item has been added:");
-                    console.log(menu);
                 };
 
+                // Add is unsuccessful
                 request.onerror = function(e) {
                     console.log(e.value);
                     deferred.reject("Menu item couldn't be added!");
@@ -101,21 +121,21 @@
             objectStore.openCursor().onsuccess = function(event) {
                 var cursor = event.target.result;
                 if(cursor) {
-                    console.log(cursor);
-                    if(cursor.value.menu === menu) {
-                        console.log(cursor.value.menu);
+                    if(cursor.value.id === menu.id) {
+                        console.log(cursor.value);
                         // Get the old value that we want to update
                         var menuToUpdate = cursor.value;
 
                         // update the value(s) in the object that we want to change
-                        menuToUpdate.menu.appetizer = menu.appetizer;
-                        menuToUpdate.menu.isDrinks = menu.isDrinks;
-                        menuToUpdate.menu.drinks = menu.drinks;
-                        menuToUpdate.menu.entree = menu.entree;
-                        menuToUpdate.menu.isWine = menu.isWine;
-                        menuToUpdate.menu.wine = menu.wine;
-                        menuToUpdate.menu.dessert = menu.dessert;
-                        menuToUpdate.menu.author = menu.author;
+                        menuToUpdate.id = menu.id;
+                        menuToUpdate.appetizer = menu.appetizer;
+                        menuToUpdate.isDrinks = menu.isDrinks;
+                        menuToUpdate.drinks = menu.drinks;
+                        menuToUpdate.entree = menu.entree;
+                        menuToUpdate.isWine = menu.isWine;
+                        menuToUpdate.wine = menu.wine;
+                        menuToUpdate.dessert = menu.dessert;
+                        menuToUpdate.author = menu.author;
                         var request = cursor.update(menuToUpdate);
                         request.onerror = function(e) {
                             console.log(e.value);
@@ -124,7 +144,8 @@
                         request.onsuccess = function(e) {
                             // Success - the data is updated!
                             deferred.resolve();
-                            console.log("Update successful");
+                            console.log("Update successful: ");
+                            console.log(menuToUpdate);
                         };
                     } else {
                         cursor.continue();
@@ -143,7 +164,7 @@
             objectStore.openCursor().onsuccess = function(event) {
                 var cursor = event.target.result;
                 if(cursor) {
-                    if(cursor.value.menu === menu) {
+                    if(cursor.value === menu) {
                         // Get the old value that we want to update
                         var menuToUpdate = cursor.value;
 
@@ -157,7 +178,8 @@
                         request.onsuccess = function(e) {
                             // Success - the data is updated!
                             deferred.resolve();
-                            console.log("Upvote successful");
+                            console.log("Upvote successful:");
+                            console.log(menuToUpdate);
                         };
                     } else {
                         cursor.continue();
@@ -176,7 +198,7 @@
             objectStore.openCursor().onsuccess = function(event) {
                 var cursor = event.target.result;
                 if(cursor) {
-                    if(cursor.value.menu === menu) {
+                    if(cursor.value === menu) {
                         // Get the old value that we want to update
                         var menuToUpdate = cursor.value;
 
@@ -190,7 +212,8 @@
                         request.onsuccess = function(e) {
                             // Success - the data is updated!
                             deferred.resolve();
-                            console.log("Downvote successful");
+                            console.log("Downvote successful:");
+                            console.log(menuToUpdate);
                         };
                     } else {
                         cursor.continue();
@@ -211,7 +234,7 @@
                 var trans = db.transaction(["menus"], "readwrite");
                 var store = trans.objectStore("menus");
 
-                var request = store.delete(menu);
+                var request = store.delete(menu.id);
                 request.onsuccess = function(e) {
                     deferred.resolve();
                 };
@@ -254,8 +277,8 @@
 
       that.addMenu = function(){
           if(that.menu.entree != null || that.menu.author != null){
-              that.menu.upvotes = Math.floor((Math.random() * 100) + 1);
-              that.menu.downvotes = Math.floor((Math.random() * 100) + 1);
+              that.menu.upvotes = 0;
+              that.menu.downvotes = 0; //Math.floor((Math.random() * 100) + 1);
               indexedDBDataSvc.addMenu(that.menu).then(function(){
                   that.refreshList();
               }, function(err){
