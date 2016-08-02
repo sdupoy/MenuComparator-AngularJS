@@ -1,126 +1,126 @@
 <!DOCTYPE html>
 <html ng-app="bestMenuApp">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Best food ever</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>
-  <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
-  <link rel="stylesheet" href="app.css">
-  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" href="app.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Best food ever</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+    <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+    <link rel="stylesheet" href="app.css">
+    <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app.css">
 
 </head>
 
 <body>
 <div class="header">
-  <h1>Best menu ever</h1>
+    <h1>Best menu ever</h1>
 
 </div>
 <div class="corps" ng-controller="menuController as MenusCtrl">
-  <div class="col-md-6">
-    <div class="list-group" id="viewNvote" >
-      <div class="list-group-item" ng-repeat="menu in MenusCtrl.menus">
-          <em class="pull-right">
-              <button class="btn btn-primary" ng-click="MenusCtrl.editMenuView(menu)">
-                  <i class="glyphicon glyphicon-pencil"></i>
-              </button>
-          </em>
-          <em class="pull-right">
-              <button class="btn btn-primary" ng-click="MenusCtrl.deleteMenu(menu.id)">
-                  <i class="glyphicon glyphicon-remove"></i>
-              </button>
-          </em>
-          <br>
-          <h3 ng-show="menu.appetizer">
-              <span class="menu_def">Appetizer</span>
-              <span class="menu_item">{{menu.appetizer}}</span>
-          </h3>
-          <h3 ng-show="menu.isDrinks">
-              <span class="menu_def">Drinks</span>
-              <span class="menu_item">{{menu.drinks}}</span>
-          </h3>
-          <h3>
-              <span class="menu_def">Entree</span>
-              <span class="menu_item">{{menu.entree}}</span>
-          </h3>
-          <h3 ng-show="menu.isWine">
-              <span class="menu_def">Wine</span>
-              <span class="menu_item">{{menu.wine}}</span>
-          </h3>
-          <h3>
-              <span class="menu_def">Dessert</span>
-              <span class="menu_item">{{menu.dessert}}</span>
-          </h3>
-          <span class="menu_item right">by {{menu.author}}</span>
-          <h4>{{menu.upvotes}} <i class="glyphicon glyphicon-thumbs-up" ng-show="menu.upvotes" ng-click="MenusCtrl.upvote(menu)"></i>
-              {{menu.downvotes}} <i class="glyphicon glyphicon-thumbs-down" ng-show="menu.downvotes" ng-click="MenusCtrl.downvote(menu)"></i>
-          </h4>
-      </div>
+    <div class="col-md-6">
+        <div class="list-group" id="viewNvote" >
+            <div class="list-group-item" ng-repeat="(key,menu) in MenusCtrl.menus track by $index">
+                <em class="pull-right">
+                    <button class="btn btn-primary" ng-click="MenusCtrl.editMenuView(menu)">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                </em>
+                <em class="pull-right">
+                    <button class="btn btn-primary" ng-click="MenusCtrl.deleteMenu(menu)">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </em>
+                <br>
+                <h3 ng-show="menu.appetizer">
+                    <span class="menu_def">Appetizer</span>
+                    <span class="menu_item">{{menu.appetizer}}</span>
+                </h3>
+                <h3 ng-show="menu.isDrinks">
+                    <span class="menu_def">Drinks</span>
+                    <span class="menu_item">{{menu.drinks}}</span>
+                </h3>
+                <h3>
+                    <span class="menu_def">Entree</span>
+                    <span class="menu_item">{{menu.entree}}</span>
+                </h3>
+                <h3 ng-show="menu.isWine">
+                    <span class="menu_def">Wine</span>
+                    <span class="menu_item">{{menu.wine}}</span>
+                </h3>
+                <h3>
+                    <span class="menu_def">Dessert</span>
+                    <span class="menu_item">{{menu.dessert}}</span>
+                </h3>
+                <span class="menu_item right">by {{menu.author}}</span>
+                <h4>{{menu.upvotes}} <i class="glyphicon glyphicon-thumbs-up" ng-click="MenusCtrl.upvote(menu)"></i>
+                    {{menu.downvotes}} <i class="glyphicon glyphicon-thumbs-down" ng-click="MenusCtrl.downvote(menu)"></i>
+                </h4>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="col-md-6">
-    <div class="addMyMenu">
-      <h2 ng-hide="MenusCtrl.edition">New menu</h2><h2 ng-show="MenusCtrl.edition">Edit this menu</h2>
-      <form name="addMenuForm" >
-            <h3>
-                <span class="menu_def">Appetizer</span>
+    <div class="col-md-6">
+        <div class="addMyMenu">
+            <h2 ng-hide="MenusCtrl.edition">New menu</h2><h2 ng-show="MenusCtrl.edition">Edit this menu</h2>
+            <form name="addMenuForm" >
+                <h3>
+                    <span class="menu_def">Appetizer</span>
                 <span class="menu_new_item">
                     <input type="text" ng-model="MenusCtrl.menu.appetizer">
                 </span>
-            </h3>
-            <h3>
-                <input type="checkbox" name="isDrinks" value="false" ng-model="MenusCtrl.menu.isDrinks">
-                <span class="menu_def">Drinks </span>
+                </h3>
+                <h3>
+                    <input type="checkbox" name="isDrinks" value="false" ng-model="MenusCtrl.menu.isDrinks">
+                    <span class="menu_def">Drinks </span>
                 <span class="menu_new_item" ng-show="MenusCtrl.menu.isDrinks">
                     <input type="text" ng-model="MenusCtrl.menu.drinks"/>
                 </span>
-            </h3>
-            <h3>
-                <span class="menu_def">Entree</span>
+                </h3>
+                <h3>
+                    <span class="menu_def">Entree</span>
                 <span class="menu_new_item">
                     <input type="text" ng-model="MenusCtrl.menu.entree" required/>
                 </span>
-            </h3>
-            <h3>
-                <input type="checkbox" name="isWine" value="false" ng-model="MenusCtrl.menu.isWine">
-                <span class="menu_def">Wine </span>
+                </h3>
+                <h3>
+                    <input type="checkbox" name="isWine" value="false" ng-model="MenusCtrl.menu.isWine">
+                    <span class="menu_def">Wine </span>
                 <span class="menu_new_item" ng-show="MenusCtrl.menu.isWine">
                     <input type="text" ng-model="MenusCtrl.menu.wine"/>
                 </span>
-            </h3>
-            <h3>
-                <span class="menu_def">Dessert</span>
+                </h3>
+                <h3>
+                    <span class="menu_def">Dessert</span>
                 <span class="menu_new_item">
                     <input type="text" ng-model="MenusCtrl.menu.dessert" required/>
                 </span>
-            </h3>
-          <h3>
-              <span class="menu_def_author">by </span>
+                </h3>
+                <h3>
+                    <span class="menu_def_author">by </span>
               <span class="menu_new_item">
                   <input type="text" ng-model="MenusCtrl.menu.author" required/>
               </span>
-          </h3>
-          <br>
-          <em class="pull-right">
-              <input ng-hide="MenusCtrl.edition" type="submit" class="btn btn-secondary" ng-click="MenusCtrl.addMenu()" value="Add this menu"/>
-              <input ng-show="MenusCtrl.edition" type="submit" class="btn btn-secondary" ng-click="MenusCtrl.editMenu()" value="Save changes"/>
-          </em>
-      </form>
-    </div>
+                </h3>
+                <br>
+                <em class="pull-right">
+                    <input ng-hide="MenusCtrl.edition" type="submit" class="btn btn-secondary" ng-click="MenusCtrl.addMenu()" value="Add this menu"/>
+                    <input ng-show="MenusCtrl.edition" type="submit" class="btn btn-secondary" ng-click="MenusCtrl.editMenu()" value="Save changes"/>
+                </em>
+            </form>
+        </div>
 
-  </div>
-  <!--[if lt IE 7]>
-  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-  <![endif]-->
+    </div>
+    <!--[if lt IE 7]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
 
 
 
@@ -129,12 +129,12 @@
 
 </div>
 
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
-  <script src="app.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="app.js"></script>
 
-  <script src="components/version/version.js"></script>
-  <script src="components/version/version-directive.js"></script>
-  <script src="components/version/interpolate-filter.js"></script>
+<script src="components/version/version.js"></script>
+<script src="components/version/version-directive.js"></script>
+<script src="components/version/interpolate-filter.js"></script>
 </body>
 </html>
