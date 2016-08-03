@@ -12,7 +12,7 @@
 
         var open = function(){
             var deferred = $q.defer();
-            var version = 1;
+            var version = 2;
             var request = indexedDB.open("menus", version);
             request.onupgradeneeded = function(e) {
                 db = e.target.result;
@@ -49,7 +49,7 @@
                     if(result)
                     {
                         tempMenus.push(result.value);
-                        console.log(result.value);
+                        //console.log(result.value);
                         result.continue();
                     }
                     else{
@@ -122,10 +122,10 @@
                 var cursor = event.target.result;
                 if(cursor) {
                     if(cursor.value.id === menu.id) {
-                        console.log(cursor.value);
+                        //console.log(cursor.value);
                         // Get the old value that we want to update
                         var menuToUpdate = cursor.value;
-
+                        console.log("Updating menu...");
                         // update the value(s) in the object that we want to change
                         menuToUpdate.id = menu.id;
                         menuToUpdate.appetizer = menu.appetizer;

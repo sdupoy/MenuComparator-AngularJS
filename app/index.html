@@ -20,54 +20,10 @@
 </head>
 
 <body>
-<div class="header">
-    <h1>Best menu ever</h1>
-
-</div>
+    <h1 class="header">Best menu ever</h1>
 <div class="corps" ng-controller="menuController as MenusCtrl">
-    <div class="col-md-6">
-        <div class="list-group" id="viewNvote" >
-            <div class="list-group-item" ng-repeat="(key,menu) in MenusCtrl.menus track by $index">
-                <em class="pull-right">
-                    <button class="btn btn-primary" ng-click="MenusCtrl.editMenuView(menu)">
-                        <i class="glyphicon glyphicon-pencil"></i>
-                    </button>
-                </em>
-                <em class="pull-right">
-                    <button class="btn btn-primary" ng-click="MenusCtrl.deleteMenu(menu)">
-                        <i class="glyphicon glyphicon-remove"></i>
-                    </button>
-                </em>
-                <br>
-                <h3 ng-show="menu.appetizer">
-                    <span class="menu_def">Appetizer</span>
-                    <span class="menu_item">{{menu.appetizer}}</span>
-                </h3>
-                <h3 ng-show="menu.isDrinks">
-                    <span class="menu_def">Drinks</span>
-                    <span class="menu_item">{{menu.drinks}}</span>
-                </h3>
-                <h3>
-                    <span class="menu_def">Entree</span>
-                    <span class="menu_item">{{menu.entree}}</span>
-                </h3>
-                <h3 ng-show="menu.isWine">
-                    <span class="menu_def">Wine</span>
-                    <span class="menu_item">{{menu.wine}}</span>
-                </h3>
-                <h3>
-                    <span class="menu_def">Dessert</span>
-                    <span class="menu_item">{{menu.dessert}}</span>
-                </h3>
-                <span class="menu_item right">by {{menu.author}}</span>
-                <h4>{{menu.upvotes}} <i class="glyphicon glyphicon-thumbs-up" ng-click="MenusCtrl.upvote(menu)"></i>
-                    {{menu.downvotes}} <i class="glyphicon glyphicon-thumbs-down" ng-click="MenusCtrl.downvote(menu)"></i>
-                </h4>
-            </div>
-        </div>
-    </div>
 
-    <div class="col-md-6">
+    <div class="col-md-6"> <!-- col-md-push-6 -->
         <div class="addMyMenu">
             <h2 ng-hide="MenusCtrl.edition">New menu</h2><h2 ng-show="MenusCtrl.edition">Edit this menu</h2>
             <form name="addMenuForm" >
@@ -116,8 +72,51 @@
                 </em>
             </form>
         </div>
-
     </div>
+
+    <div class="col-md-6"> <!-- col-md-pull-6 -->
+        <div class="list-group" id="viewNvote" >
+            <div class="list-group-item" ng-repeat="(key,menu) in MenusCtrl.menus track by $index">
+                <em class="pull-right">
+                    <button class="btn btn-primary" ng-click="MenusCtrl.editMenuView(menu)">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                </em>
+                <em class="pull-right">
+                    <button class="btn btn-primary" ng-click="MenusCtrl.deleteMenu(menu)">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </em>
+                <br>
+                <h3 ng-show="menu.appetizer">
+                    <span class="menu_def">Appetizer</span>
+                    <span class="menu_item">{{menu.appetizer}}</span>
+                </h3>
+                <h3 ng-show="menu.isDrinks">
+                    <span class="menu_def">Drinks</span>
+                    <span class="menu_item">{{menu.drinks}}</span>
+                </h3>
+                <h3>
+                    <span class="menu_def">Entree</span>
+                    <span class="menu_item">{{menu.entree}}</span>
+                </h3>
+                <h3 ng-show="menu.isWine">
+                    <span class="menu_def">Wine</span>
+                    <span class="menu_item">{{menu.wine}}</span>
+                </h3>
+                <h3>
+                    <span class="menu_def">Dessert</span>
+                    <span class="menu_item">{{menu.dessert}}</span>
+                </h3>
+                <span class="menu_item right">by {{menu.author}}</span>
+                <h4>{{menu.upvotes}} <i class="glyphicon glyphicon-thumbs-up" ng-click="MenusCtrl.upvote(menu)"></i>
+                    {{menu.downvotes}} <i class="glyphicon glyphicon-thumbs-down" ng-click="MenusCtrl.downvote(menu)"></i>
+                </h4>
+            </div>
+        </div>
+    </div>
+
+
     <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
