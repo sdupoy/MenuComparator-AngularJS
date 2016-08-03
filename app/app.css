@@ -9,29 +9,30 @@ html{
     margin: 0;
     width: 100%;
     min-width: 990px;
-}
 
+}
 body{
+    margin-top : -5em;
+    height: 100%;
+    width: 100%;
     background-image: url(resources/img/background-img.jpg);
     background-size:cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    filter: alpha(opacity=70);
-    margin-top : -3em;
-    height: 100%;
-    width: 100%;
 }
 
 .header{
+    display: block;
     text-align: center;
-    font-weight: 300;
     font-family: myFirstFont;
-    height: 10em;
+    padding-top: 25px;
+    height: 1.5em;
     text-align: center;
     width: 100%;
     background: whitesmoke fixed;
     position: fixed;
     z-index: 10;
+    font-size: 7em;
 }
 
 .corps{
@@ -39,7 +40,7 @@ body{
     margin-right: 8em;
     padding-left: 5em;
     padding-right: 5em;
-    padding-top: 10em;
+    padding-top: 12em;
     margin-top: 3em;
     margin-bottom: 3em;
     height: 100%;
@@ -48,27 +49,22 @@ body{
 .addMyMenu{
     background-color: whitesmoke;
     position: fixed;
-    margin-right: 12em;
     margin-top: 2em;
-    margin-bottom: 15em;
-    width: 30em;
-    height: 70%;
-    overflow-y: scroll;
-
+    margin-bottom: 2em;
     overflow-x: hidden;
-
+    overflow-y: scroll;
     font-family: myFirstFont;
     padding-top: 0;
     padding-right: 2em;
     padding-left: 2em;
     padding-bottom: 2em;
-    border-radius: 25px;
+    border-radius: 4px;
 }
 
 .list-group-item{
     background-color: whitesmoke;
     margin : 2em;
-    border-radius: 10px;
+    border-radius: 4px;
 }
 
 #viewNvote{
@@ -80,10 +76,6 @@ p{
 
 }
 
-h1{
-    text-align: center;
-    font-size: 7em;
-}
 h2{
     text-align: center;
     font-size: 4em;
